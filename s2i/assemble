@@ -1,10 +1,10 @@
 #!/bin/sh
 echo "Running mkdocs build"
 
-cd /tmp/src/source
+#cd /tmp/src/source
 mkdocs build
-mv site /var/documentation/html
 rc=$?
+mv site /var/documentation/html
 
 exit $rc
 
