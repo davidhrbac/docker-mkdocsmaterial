@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "Running mkdocs build"
 
-cd /tmp/src/source
+cd /tmp/src
 mkdocs build
 rc=$?
 mv site /var/documentation/html
