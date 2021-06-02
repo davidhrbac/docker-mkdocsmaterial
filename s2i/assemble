@@ -1,0 +1,8 @@
+#!/bin/sh
+echo "Running mkdocs build"
+
+mkdocs build /tmp/src/source /var/documentation/html
+rc=$?
+
+exit $rc
+
