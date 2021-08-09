@@ -4,7 +4,15 @@ echo "Running mkdocs build"
 cd /tmp/src
 ls -alh
 mkdocs -v build
+mkdir devel
+git checkout --detach
+git for-each-ref refs/remotes/origin --format='./devel/%(refname:lstrip=3) %(refname:lstrip=3)'|egrep -v ' HEAD$|master$' |xargs -n 2 git worktree add
+ls -al
+ls -al devel
+for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*} ; echo "*** Building $output"; mkdocs build -f $i -d ../../site/devel/$output; done
 #rc=$?
+ls -al site
+ls -al site/devel
 mv site /var/documentation/html
 
 #exit $rc
