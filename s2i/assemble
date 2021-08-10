@@ -3,19 +3,31 @@ echo "Running mkdocs build"
 
 cd /tmp/src
 ls -alh
+# create devel folders
 mkdir -p devel docs/devel
+# prepade git
 git checkout --detach
+# create folders per banch in devel folder
 git for-each-ref refs/remotes/origin --format='./devel/%(refname:lstrip=3) %(refname:lstrip=3)'|egrep -v ' HEAD$|master$' |xargs -n 2 git worktree add
 ls -al
 ls -al devel
+# prepare index page for /devel/ URL
 echo "# Devel Branches" > docs/devel/index.md
 edho "" >> docs/devel/index.md
-for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*}; echo "* [$output]($output)" >> docs/devel/index.md; done
+#for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*}; echo "* [$output]($output)" >> docs/devel/index.md; done
+
+# clear out non MKDocs branches
+GR=$(for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*}; echo "$output"; done | paste -sd "|" -)
+# create branch list sorted by commitdate reversed
+git for-each-ref --sort=-committerdate refs/heads/ --format='* [%(refname:short)](./%(refname:short)/) - %(objectname:short) - %(contents:subject) - %(authorname) (%(committerdate:short))' | egrep $GR >> docs/devel/index.md
+# build master documentation
 mkdocs -v build
+# build all MKDocs branches
 for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*} ; echo "*** Building $output"; mkdocs build -f $i -d ../../site/devel/$output; done
 #rc=$?
 ls -al site
 ls -al site/devel
+# move documtantation site to proper folder
 mv site /var/documentation/html
 
 #exit $rc
