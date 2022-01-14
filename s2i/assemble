@@ -13,7 +13,7 @@ ls -al
 ls -al devel
 # prepare index page for /devel/ URL
 echo "# Devel Branches" > docs/devel/index.md
-edho "" >> docs/devel/index.md
+echo "" >> docs/devel/index.md
 #for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*}; echo "* [$output]($output)" >> docs/devel/index.md; done
 
 # clear out non MKDocs branches
@@ -21,7 +21,7 @@ GR=$(for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*}; echo "$outp
 # create branch list sorted by commitdate reversed
 git for-each-ref --sort=-committerdate refs/heads/ --format='* [%(refname:short)](./%(refname:short)/) - %(objectname:short) - %(contents:subject) - %(authorname) (%(committerdate:short))' | egrep $GR >> docs/devel/index.md
 # prepare pip
-pip install -r requirements.txt
+#pip install --user -r requirements.txt
 # build master documentation
 mkdocs -v build
 # build all MKDocs branches

@@ -2,7 +2,7 @@ FROM python:latest
 
 LABEL io.openshift.s2i.scripts-url="image:///var/documentation/s2i"
 
-#RUN pip install mkdocs-material mkdocs-redirects mkdocs-minify-plugin mkdocs-git-revision-date-localized-plugin mkdocs-with-pdf
+RUN pip install mkdocs-material mkdocs-redirects mkdocs-minify-plugin mkdocs-git-revision-date-localized-plugin mkdocs-with-pdf mkdocs-macros-plugin
 
 WORKDIR /var/documentation
 COPY s2i/ /var/documentation/s2i
