@@ -20,6 +20,8 @@ edho "" >> docs/devel/index.md
 GR=$(for i in devel/*/mkdocs.yml; do ii=${i#\d*l/}; output=${ii%/*}; echo "$output"; done | paste -sd "|" -)
 # create branch list sorted by commitdate reversed
 git for-each-ref --sort=-committerdate refs/heads/ --format='* [%(refname:short)](./%(refname:short)/) - %(objectname:short) - %(contents:subject) - %(authorname) (%(committerdate:short))' | egrep $GR >> docs/devel/index.md
+# prepare pip
+pip install -r requirements.txt
 # build master documentation
 mkdocs -v build
 # build all MKDocs branches
